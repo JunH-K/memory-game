@@ -7,11 +7,39 @@ body {
 .title {
     font-weight: normal;
     text-align: center;
-    font-size: 6em;
+    font-size: 3em;
 }
 
 .game-info {
     font-size: 2rem;
+}
+
+.dim{
+    z-index: 10;
+    position: absolute;
+    top:0;
+    left:0;
+    opacity: 0.8;
+    text-align: center;
+    background: black;
+    width: 100vw;
+    height: 100vh;
+}
+
+.start_wrap{
+    z-index: 9999;
+    position: absolute;
+    padding-top: 50%;
+    top:0;
+    left:0;
+    font-size: 3rem;
+    width: 100vw;
+    height: 100vh;
+    text-align: center;
+}
+
+.start_wrap .start{
+    cursor: pointer;
 }
 
 .info-container {
@@ -56,6 +84,7 @@ body {
 .card-side-back {
     background: url("/img/js.png") no-repeat;
     background-size: contain;
+    cursor: pointer;
 }
 
 .card.flip  .card-side-back{

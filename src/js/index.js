@@ -14,14 +14,88 @@ const datas = [
 
 (function () {
   const containerElem = document.querySelector( '.container' );
+  const dimElem = document.querySelector( '.dim' );
+  const startWrap = document.querySelector( '.start_wrap' );
+  const startElem = document.querySelector( '.start' );
+  const timeElem = document.querySelector( '#time-remaining' );
+  const REMAIN_TIME = 60;
+  let remainTime = REMAIN_TIME;
   let clickElement = [];
   let matchingCount = 0;
+  let interval = null;
+  let isRestart = false;
 
   initCard();
 
   containerElem.addEventListener( 'click', onClickCard );
   containerElem.addEventListener( 'transitionend', checkMatching );
+  startElem.addEventListener( 'click', startGame );
 
+  function startGame(e) {
+    if ( !isRestart && e.target.classList.contains( 'start_wrap' ) ){
+      startInterval();
+    } else {
+      reset();
+      startInterval();
+    }
+
+    hide( dimElem );
+    hide( startWrap );
+
+  }
+
+  function show(elem) {
+    elem.style.display = 'block';
+  }
+
+  function hide(elem) {
+    elem.style.display = 'none';
+  }
+
+  function setText(elem, text) {
+    elem.innerHTML = text;
+  }
+
+  function startInterval() {
+    interval = setInterval( () => {
+      remainTime -= 1;
+      setText( timeElem, remainTime );
+
+      if ( remainTime === 0 ){
+        clearInterval( interval );
+        show( dimElem );
+        show( startWrap );
+        setText( startElem, "Game Over<br/>Restart" );
+        isRestart = true;
+        updateScore( REMAIN_TIME - remainTime );
+      }
+    }, 1000 );
+  }
+
+  function updateScore(score) {
+    const scoreElem = document.querySelector( '.score' );
+    const frag = document.createDocumentFragment();
+    const scores = getStorage( 'scores' );
+    scores.push( score );
+    scores.sort();
+
+    Array.from( scoreElem.childNodes ).forEach( (child) => {
+      scoreElem.removeChild( child );
+    } );
+
+    scores.forEach( (item, index) => {
+      const liElem = document.createElement( 'li' );
+      if ( index > 2 ){
+        return;
+      }
+      setText( liElem, `${ index + 1 }위 ${ item }초` );
+      frag.appendChild( liElem );
+    } );
+
+    scoreElem.appendChild( frag );
+    setStorage('scores',scores);
+
+  }
 
   function onClickCard(e) {
     if ( clickElement.length < 2 && e.target.classList.contains( 'card-side-back' ) ){
@@ -30,7 +104,7 @@ const datas = [
     }
   }
 
-  function checkMatching() {
+  function checkMatching(e) {
     if ( clickElement.length !== 2 ){
       return;
     }
@@ -43,12 +117,24 @@ const datas = [
       } );
     }
 
+    checkWin( matchingCount );
     clickElement = [];
+  }
+
+  function checkWin(count) {
+    if ( count === 8 ){
+      clearInterval( interval );
+      show( dimElem );
+      show( startWrap );
+      setText( startElem, "Complete! <br/> Restart" );
+      isRestart = true;
+      updateScore( REMAIN_TIME - remainTime );
+    }
   }
 
   function initCard() {
     const dataSource = shuffle( datas );
-    const container = document.querySelector( '.container' );
+    // const container = document.querySelector( '.container' );
     const cards = document.createDocumentFragment();
 
     dataSource && dataSource.forEach( (item) => {
@@ -56,8 +142,21 @@ const datas = [
       cards.append( createCard( { frontImage, backImage, key } ) );
     } );
 
-    container.appendChild( cards );
+    containerElem.appendChild( cards );
 
+    if ( !getStorage( 'scores' ) ){
+      setStorage( 'scores', [] )
+    }
+  }
+
+  function setStorage(key, obj) {
+    const myStorage = window.localStorage;
+    return myStorage.setItem( key, JSON.stringify( obj ) );
+  }
+
+  function getStorage(key) {
+    const myStorage = window.localStorage;
+    return JSON.parse( myStorage.getItem( key ) );
   }
 
   function createCard({ frontImage, backImage, key }) {
@@ -77,6 +176,24 @@ const datas = [
     cardDiv.appendChild( backDiv );
 
     return cardDiv;
+  }
+
+  function reset() {
+
+
+    //남은시간초기화
+    setText( timeElem, REMAIN_TIME );
+    matchingCount = 0;
+    remainTime = REMAIN_TIME;
+
+    //카드 초기화
+    Array.from( containerElem.childNodes ).forEach( (child) => {
+      if ( child.classList && child.classList.contains( 'card' ) ){
+        containerElem.removeChild( child );
+      }
+    } );
+    //initCard
+    initCard();
   }
 
   function shuffle(datas) {
