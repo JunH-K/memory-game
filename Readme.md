@@ -6,3 +6,6 @@
 
 VanillaJs, css
 
+![게임화면](src/img/game.png)
+
+
