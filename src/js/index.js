@@ -1,15 +1,23 @@
 import '../css/reset.css'
 import '../css/style.css'
+import angular from '../img/angular.png';
+import node from '../img/node.svg';
+import react from '../img/react.png';
+import vue from '../img/vue.png';
+import html from '../img/html.png';
+import github from '../img/github.png';
+import ws from '../img/ws.png';
+import docker from '../img/docker.png';
 
 const datas = [
-  { frontImage: 'angular.png', backImage: 'js.png', key: 1 },
-  { frontImage: 'node.svg', backImage: 'js.png', key: 2 },
-  { frontImage: 'react.png', backImage: 'js.png', key: 3 },
-  { frontImage: 'vue.png', backImage: 'js.png', key: 4 },
-  { frontImage: 'html.png', backImage: 'js.png', key: 5 },
-  { frontImage: 'github.png', backImage: 'js.png', key: 6 },
-  { frontImage: 'ws.png', backImage: 'js.png', key: 7 },
-  { frontImage: 'docker.png', backImage: 'js.png', key: 8 },
+  { frontImage: angular, backImage: 'js.png', key: 1 },
+  { frontImage: node, backImage: 'js.png', key: 2 },
+  { frontImage: react, backImage: 'js.png', key: 3 },
+  { frontImage: vue, backImage: 'js.png', key: 4 },
+  { frontImage: html, backImage: 'js.png', key: 5 },
+  { frontImage: github, backImage: 'js.png', key: 6 },
+  { frontImage: ws, backImage: 'js.png', key: 7 },
+  { frontImage: docker, backImage: 'js.png', key: 8 },
 ];
 
 (function () {
@@ -93,7 +101,7 @@ const datas = [
     } );
 
     scoreElem.appendChild( frag );
-    setStorage('scores',scores);
+    setStorage( 'scores', scores );
 
   }
 
@@ -168,7 +176,7 @@ const datas = [
     frontDiv.classList.add( 'card-side', 'card-side-front' );
     backDiv.classList.add( 'card-side', 'card-side-back' );
 
-    frontDiv.style.backgroundImage = `url("/img/${ frontImage }")`;
+    frontDiv.style.backgroundImage = `url("${ frontImage }")`;
     frontDiv.style.backgroundRepeat = 'no-repeat';
     backDiv.dataset.key = key;
 
