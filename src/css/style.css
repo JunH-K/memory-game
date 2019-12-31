@@ -29,7 +29,9 @@ body {
 .start_wrap{
     z-index: 9999;
     position: absolute;
-    padding-top: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     top:0;
     left:0;
     font-size: 3rem;
