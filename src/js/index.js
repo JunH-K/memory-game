@@ -8,6 +8,8 @@ import html from '../img/html.png';
 import github from '../img/github.png';
 import ws from '../img/ws.png';
 import docker from '../img/docker.png';
+import game from '../img/game.png';
+
 
 const datas = [
   { frontImage: angular, backImage: 'js.png', key: 1 },
