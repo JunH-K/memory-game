@@ -1,3 +1,71 @@
-#a{
-    background:black;
+body {
+    background: #000000;
+    height: 100vh;
+    color: white;
+}
+
+.title {
+    font-weight: normal;
+    text-align: center;
+    font-size: 6em;
+}
+
+.game-info {
+    font-size: 2rem;
+}
+
+.info-container {
+    grid-column: 1 /5;
+    display: flex;
+    justify-content: space-between;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    grid-gap: 10px;
+    margin: 50px;
+    justify-content: center;
+}
+
+.card {
+    position: relative;
+    width: 105px;
+    height: 155px;
+    perspective: 1000px;
+}
+
+.card-side {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0.5em;
+    box-sizing: border-box;
+    border: 1px solid #801e2e;
+    backface-visibility: hidden; /*뒷면 hidden*/
+    transition: 0.3s;
+}
+
+.card-side-front {
+    background-size: contain;
+    transform: rotateY(180deg);
+}
+
+.card-side-back {
+    background: url("/img/js.png") no-repeat;
+    background-size: contain;
+}
+
+.card.flip  .card-side-back{
+    transform: rotateY(180deg);
+}
+
+.card.flip  .card-side-front{
+    transform: rotateY(360deg);
+}
+
+.card-side-back:hover{
+    transform: translateZ(50px);
 }
