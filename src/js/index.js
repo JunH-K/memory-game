@@ -74,7 +74,7 @@ const datas = [
       if ( remainTime === 0 ){
         clearInterval( interval );
         show( dimElem );
-        show( startWrap );
+        startWrap.style.display = 'flex';
         setText( startElem, "Game Over<br/>Restart" );
         isRestart = true;
         updateScore( REMAIN_TIME - remainTime );
@@ -86,7 +86,7 @@ const datas = [
     const scoreElem = document.querySelector( '.score' );
     const frag = document.createDocumentFragment();
     const scores = getStorage( 'scores' );
-    scores.push( score );
+    score && scores.push( score );
     scores.sort();
 
     Array.from( scoreElem.childNodes ).forEach( (child) => {
@@ -135,7 +135,7 @@ const datas = [
     if ( count === 8 ){
       clearInterval( interval );
       show( dimElem );
-      show( startWrap );
+      startWrap.style.display = 'flex';
       setText( startElem, "Complete! <br/> Restart" );
       isRestart = true;
       updateScore( REMAIN_TIME - remainTime );
@@ -156,6 +156,8 @@ const datas = [
 
     if ( !getStorage( 'scores' ) ){
       setStorage( 'scores', [] )
+    }else{
+      updateScore();
     }
   }
 
