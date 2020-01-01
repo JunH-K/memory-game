@@ -35,10 +35,6 @@ const config = {
         test: /\.css$/i,
         use: ['style-loader', 'css-loader'],
       },
-      // {
-      //   test: /\.(png|jpg|svg)$/,
-      //   use: ['file-loader']
-      // }
       {
         test: /\.(png|jpg|svg)$/,
         loader: 'file-loader',
