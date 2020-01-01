@@ -75,7 +75,7 @@ body {
     box-sizing: border-box;
     border: 1px solid #801e2e;
     backface-visibility: hidden; /*뒷면 hidden*/
-    transition: 0.3s;
+    transition: 0.5s;
 }
 
 .card-side-front {

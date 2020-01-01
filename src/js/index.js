@@ -28,6 +28,7 @@ const datas = [
   const startWrap = document.querySelector( '.start_wrap' );
   const startElem = document.querySelector( '.start' );
   const timeElem = document.querySelector( '#time-remaining' );
+
   const REMAIN_TIME = 60;
   let remainTime = REMAIN_TIME;
   let clickElement = [];
@@ -38,7 +39,7 @@ const datas = [
   initCard();
 
   containerElem.addEventListener( 'click', onClickCard );
-  containerElem.addEventListener( 'transitionend', checkMatching );
+  // containerElem.addEventListener( 'transitionstart', debounce( checkMatching, 500 ) );
   startElem.addEventListener( 'click', startGame );
 
   function startGame(e) {
@@ -67,6 +68,7 @@ const datas = [
   }
 
   function startInterval() {
+
     interval = setInterval( () => {
       remainTime -= 1;
       setText( timeElem, remainTime );
@@ -111,10 +113,11 @@ const datas = [
     if ( clickElement.length < 2 && e.target.classList.contains( 'card-side-back' ) ){
       e.target.parentNode.classList.add( 'flip' );
       clickElement.push( e.target );
+      checkMatching();
     }
   }
 
-  function checkMatching(e) {
+  const checkMatching = debounce( function () {
     if ( clickElement.length !== 2 ){
       return;
     }
@@ -129,7 +132,24 @@ const datas = [
 
     checkWin( matchingCount );
     clickElement = [];
-  }
+  }, 500 );
+
+  // function checkMatching() {
+  //   if ( clickElement.length !== 2 ){
+  //     return;
+  //   }
+  //
+  //   if ( clickElement[ 0 ].dataset.key === clickElement[ 1 ].dataset.key ){
+  //     matchingCount++;
+  //   } else {
+  //     clickElement.forEach( (i) => {
+  //       i.parentNode.classList.remove( 'flip' );
+  //     } );
+  //   }
+  //
+  //   checkWin( matchingCount );
+  //   clickElement = [];
+  // }
 
   function checkWin(count) {
     if ( count === 8 ){
@@ -156,7 +176,7 @@ const datas = [
 
     if ( !getStorage( 'scores' ) ){
       setStorage( 'scores', [] )
-    }else{
+    } else {
       updateScore();
     }
   }
@@ -218,6 +238,17 @@ const datas = [
     }
 
     return double;
+  }
+
+  function debounce(func, delay) {
+    let timer = null;
+
+    return function () {
+      if ( timer ){
+        clearTimeout( timer );
+      }
+      timer = setTimeout( func, delay );
+    }
   }
 
 })();
