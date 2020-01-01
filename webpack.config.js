@@ -1,6 +1,10 @@
 const path = require( 'path' );
+const { CleanWebpackPlugin } = require( 'clean-webpack-plugin' );
 
-module.exports = (env, argv) => {
+module.exports = (env, options) => {
+  if ( options.mode === 'production' ){
+    config.plugins = [new CleanWebpackPlugin()];
+  }
   return config;
 };
 
@@ -31,10 +35,16 @@ const config = {
         test: /\.css$/i,
         use: ['style-loader', 'css-loader'],
       },
+      // {
+      //   test: /\.(png|jpg|svg)$/,
+      //   use: ['file-loader']
+      // }
       {
         test: /\.(png|jpg|svg)$/,
-        use: ['file-loader']
-      }
-    ]
+        loader: 'file-loader',
+        options: {
+          outputPath: 'images',
+        },
+      },]
   },
 };
