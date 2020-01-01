@@ -1,14 +1,14 @@
 import '../css/reset.css'
 import '../css/style.css'
-import angular from '../img/angular.png';
-import node from '../img/node.svg';
-import react from '../img/react.png';
-import vue from '../img/vue.png';
-import html from '../img/html.png';
-import github from '../img/github.png';
-import ws from '../img/ws.png';
-import docker from '../img/docker.png';
-import game from '../img/game.png';
+import angular from '../images/angular.png';
+import node from '../images/node.svg';
+import react from '../images/react.png';
+import vue from '../images/vue.png';
+import html from '../images/html.png';
+import github from '../images/github.png';
+import ws from '../images/ws.png';
+import docker from '../images/docker.png';
+import game from '../images/game.png';
 
 
 const datas = [
