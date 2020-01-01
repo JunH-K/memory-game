@@ -1,6 +1,10 @@
 const path = require( 'path' );
 
-module.exports = {
+module.exports = (env, argv) => {
+  return config;
+};
+
+const config = {
   entry: './src/js/index.js',
   output: {
     path: path.resolve( __dirname, 'dist' ),
@@ -33,7 +37,4 @@ module.exports = {
       }
     ]
   },
-  devtool: 'source-map',
-  // https://webpack.js.org/concepts/mode/#mode-development
-  mode: 'development'
 };
