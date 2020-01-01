@@ -84,7 +84,7 @@ body {
 }
 
 .card-side-back {
-    background: url("../img/js.png") no-repeat;
+    background: url("../images/js.png") no-repeat;
     background-size: contain;
     cursor: pointer;
 }
