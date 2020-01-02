@@ -1,7 +1,7 @@
 import datas from "./datas/Datas";
+import Card from "./Card";
 
 export default class Main {
-
   constructor(store) {
     this.store = store;
   }
@@ -36,7 +36,8 @@ export default class Main {
 
     dataSource && dataSource.forEach( (item) => {
       const { frontImage, backImage, key } = item;
-      cards.append( this.createCard( { frontImage, backImage, key } ) );
+      const card = new Card( frontImage, backImage, key );
+      cards.append( card.element );
     } );
 
     this.containerElem.appendChild( cards );
@@ -119,25 +120,6 @@ export default class Main {
       this.isRestart = true;
       this.updateScore( Main.REMAIN_TIME - this.remainTime );
     }
-  }
-
-  createCard({ frontImage, backImage, key }) {
-    const cardDiv = document.createElement( 'div' );
-    const frontDiv = document.createElement( 'div' );
-    const backDiv = document.createElement( 'div' );
-
-    cardDiv.classList.add( 'card' );
-    frontDiv.classList.add( 'card-side', 'card-side-front' );
-    backDiv.classList.add( 'card-side', 'card-side-back' );
-
-    frontDiv.style.backgroundImage = `url("${ frontImage }")`;
-    frontDiv.style.backgroundRepeat = 'no-repeat';
-    backDiv.dataset.key = key;
-
-    cardDiv.appendChild( frontDiv );
-    cardDiv.appendChild( backDiv );
-
-    return cardDiv;
   }
 
   reset() {

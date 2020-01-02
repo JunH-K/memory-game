@@ -6,16 +6,18 @@ import html from "../../images/html.png";
 import github from "../../images/github.png";
 import ws from "../../images/ws.png";
 import docker from "../../images/docker.png";
+import js from "../../images/js.png";
+import game from "../../images/game.png";
 
 const datas = [
-  { frontImage: angular, backImage: 'js.png', key: 1 },
-  { frontImage: node, backImage: 'js.png', key: 2 },
-  { frontImage: react, backImage: 'js.png', key: 3 },
-  { frontImage: vue, backImage: 'js.png', key: 4 },
-  { frontImage: html, backImage: 'js.png', key: 5 },
-  { frontImage: github, backImage: 'js.png', key: 6 },
-  { frontImage: ws, backImage: 'js.png', key: 7 },
-  { frontImage: docker, backImage: 'js.png', key: 8 },
+  { frontImage: angular, backImage: js, key: 1 },
+  { frontImage: node, backImage: js, key: 2 },
+  { frontImage: react, backImage: js, key: 3 },
+  { frontImage: vue, backImage: js, key: 4 },
+  { frontImage: html, backImage: js, key: 5 },
+  { frontImage: github, backImage: js, key: 6 },
+  { frontImage: ws, backImage: js, key: 7 },
+  { frontImage: docker, backImage: js, key: 8 },
 ];
 
 export default datas;
