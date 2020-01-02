@@ -1,6 +1,7 @@
 import datas from "./datas/Datas";
 import Card from "./Card";
 import Dom from "./Dom";
+import Deck from "./Deck";
 
 export default class Main {
   static REMAIN_TIME = 60;
@@ -15,38 +16,49 @@ export default class Main {
   startElem;
   timeElem;
 
+  checkMatching = this.debounce( () => {
+    if( this.clickElement.length !== 2 ) {
+      return;
+    }
+
+    if( this.clickElement[ 0 ].dataset.key === this.clickElement[ 1 ].dataset.key ) {
+      this.matchingCount++;
+    } else {
+      this.clickElement.forEach( (i) => {
+        i.parentNode.classList.remove( 'flip' );
+      } );
+    }
+
+    this.checkWin( this.matchingCount );
+    this.clickElement = [];
+  }, 500 );
+
   constructor(score) {
     this.score = score;
   }
 
   init() {
-    this.containerElem = document.querySelector( '.container' );
-    this.dimElem = document.querySelector( '.dim' );
-    this.startWrap = document.querySelector( '.start_wrap' );
-    this.startElem = document.querySelector( '.start' );
-    this.timeElem = document.querySelector( '#time-remaining' );
-    this.containerElem.addEventListener( 'click', this.onClickCard );
-    this.startElem.addEventListener( 'click', this.onCliskStartGame );
-    this.initCard();
+    this.containerElem = Dom.find( '.container' );
+    this.dimElem = Dom.find( '.dim' );
+    this.startWrap = Dom.find( '.start_wrap' );
+    this.startElem = Dom.find( '.start' );
+    this.timeElem = Dom.find( '#time-remaining' );
+    Dom.on( this.containerElem, 'click', this.onClickCard );
+    Dom.on( this.startElem, 'click', this.onClickStartGame );
+    this.initCard( datas );
   }
 
-  initCard() {
-    const dataSource = this.shuffle( datas );
-    // const container = document.querySelector( '.container' );
-    const cards = document.createDocumentFragment();
+  initCard(datas) {
+    const deck = new Deck( datas );
+    const cardElements = deck.createElements();
+    deck.shuffle();
 
-    dataSource && dataSource.forEach( (item) => {
-      const { frontImage, backImage, key } = item;
-      const card = new Card( frontImage, backImage, key );
-      cards.append( card.element );
-    } );
-
-    this.containerElem.appendChild( cards );
+    this.containerElem.appendChild( cardElements );
     this.score.updateScore();
   }
 
-  onCliskStartGame = (e) => {
-    if( !this.isRestart && e.target.classList.contains( 'start_wrap' ) ) {
+  onClickStartGame = (e) => {
+    if( !this.isRestart && e.target.classList.contains( 'start' ) ) {
       this.startInterval();
     } else {
       this.reset();
@@ -66,27 +78,10 @@ export default class Main {
     }
   }
 
-  checkMatching = this.debounce( () => {
-    if( this.clickElement.length !== 2 ) {
-      return;
-    }
-
-    if( this.clickElement[ 0 ].dataset.key === this.clickElement[ 1 ].dataset.key ) {
-      this.matchingCount++;
-    } else {
-      this.clickElement.forEach( (i) => {
-        i.parentNode.classList.remove( 'flip' );
-      } );
-    }
-
-    this.checkWin( this.matchingCount );
-    this.clickElement = [];
-  }, 500 );
-
   checkWin(count) {
     if( count === 8 ) {
       clearInterval( this.interval );
-      Dom.setText( this.dimElem );
+      Dom.show(this.dimElem);
       Dom.showFlex( this.startWrap );
       Dom.setText( this.startElem, "Complete! <br/> Restart" );
       this.isRestart = true;
@@ -106,20 +101,20 @@ export default class Main {
         this.containerElem.removeChild( child );
       }
     } );
-    //initCard
-    this.initCard();
+
+    this.initCard(datas);
   }
 
-  shuffle(datas) {
-    const double = [ ...datas, ...datas.reverse() ];
-    const { length } = double;
-
-    for ( let i = 0; i < length; i++ ) {
-      const random = Math.floor( Math.random() * length );
-      [ double[ i ], double[ random ] ] = [ double[ random ], double[ i ] ];
-    }
-    return double;
-  }
+  // shuffle(datas) {
+  //   const double = [ ...datas, ...datas.reverse() ];
+  //   const { length } = double;
+  //
+  //   for ( let i = 0; i < length; i++ ) {
+  //     const random = Math.floor( Math.random() * length );
+  //     [ double[ i ], double[ random ] ] = [ double[ random ], double[ i ] ];
+  //   }
+  //   return double;
+  // }
 
   debounce(func, delay) {
     let timer = null;
@@ -135,17 +130,20 @@ export default class Main {
     this.interval = setInterval( () => {
       this.remainTime -= 1;
       Dom.setText( this.timeElem, this.remainTime );
-
-      if( this.remainTime === 50 ) {
-        clearInterval( this.interval );
-        this.isRestart = true;
-        this.score.updateScore( Main.REMAIN_TIME - this.remainTime );
-        Dom.setText( this.dimElem );
-        Dom.show( this.dimElem );
-        Dom.showFlex( this.startWrap );
-        Dom.setText( this.startElem, "Game Over<br/>Restart" );
-      }
+      this.gameOver( this.remainTime, 0 );
     }, 1000 );
+  }
+
+  gameOver = (remainTime, timeout) => {
+    if( remainTime === timeout ) {
+      clearInterval( this.interval );
+      this.isRestart = true;
+      this.score.updateScore( Main.REMAIN_TIME - this.remainTime );
+      Dom.setText( this.dimElem );
+      Dom.show( this.dimElem );
+      Dom.showFlex( this.startWrap );
+      Dom.setText( this.startElem, "Game Over<br/>Restart" );
+    }
   }
 
 }
