@@ -1,11 +1,8 @@
 import datas from "./datas/Datas";
 import Card from "./Card";
+import Dom from "./Dom";
 
 export default class Main {
-  constructor(store) {
-    this.store = store;
-  }
-
   static REMAIN_TIME = 60;
   remainTime = Main.REMAIN_TIME;
   clickElement = [];
@@ -18,6 +15,10 @@ export default class Main {
   startElem;
   timeElem;
 
+  constructor(score) {
+    this.score = score;
+  }
+
   init() {
     this.containerElem = document.querySelector( '.container' );
     this.dimElem = document.querySelector( '.dim' );
@@ -25,7 +26,7 @@ export default class Main {
     this.startElem = document.querySelector( '.start' );
     this.timeElem = document.querySelector( '#time-remaining' );
     this.containerElem.addEventListener( 'click', this.onClickCard );
-    this.startElem.addEventListener( 'click', this.startGame );
+    this.startElem.addEventListener( 'click', this.onCliskStartGame );
     this.initCard();
   }
 
@@ -41,15 +42,10 @@ export default class Main {
     } );
 
     this.containerElem.appendChild( cards );
-
-    if( !this.store.getLocalStorage( 'scores' ) ) {
-      this.store.setLocalStorage( 'scores', [] );
-    } else {
-      this.updateScore();
-    }
+    this.score.updateScore();
   }
 
-  startGame = (e) => {
+  onCliskStartGame = (e) => {
     if( !this.isRestart && e.target.classList.contains( 'start_wrap' ) ) {
       this.startInterval();
     } else {
@@ -57,34 +53,10 @@ export default class Main {
       this.startInterval();
     }
 
-    this.hide( this.dimElem );
-    this.hide( this.startWrap );
+    Dom.hide( this.dimElem );
+    Dom.hide( this.startWrap );
 
   };
-
-  updateScore(score) {
-    const scoreElem = document.querySelector( '.score' );
-    const frag = document.createDocumentFragment();
-    const scores = this.store.getLocalStorage( 'scores' );
-    score && scores.push( score );
-    scores.sort();
-
-    Array.from( scoreElem.childNodes ).forEach( (child) => {
-      scoreElem.removeChild( child );
-    } );
-
-    scores.forEach( (item, index) => {
-      const liElem = document.createElement( 'li' );
-      if( index > 2 ) {
-        return;
-      }
-      this.setText( liElem, `${ index + 1 }위 ${ item }초` );
-      frag.appendChild( liElem );
-    } );
-
-    scoreElem.appendChild( frag );
-    this.store.setLocalStorage( 'scores', scores );
-  }
 
   onClickCard = (e) => {
     if( this.clickElement.length < 2 && e.target.classList.contains( 'card-side-back' ) ) {
@@ -114,17 +86,17 @@ export default class Main {
   checkWin(count) {
     if( count === 8 ) {
       clearInterval( this.interval );
-      this.show( this.dimElem );
-      this.startWrap.style.display = 'flex';
-      this.setText( this.startElem, "Complete! <br/> Restart" );
+      Dom.setText( this.dimElem );
+      Dom.showFlex( this.startWrap );
+      Dom.setText( this.startElem, "Complete! <br/> Restart" );
       this.isRestart = true;
-      this.updateScore( Main.REMAIN_TIME - this.remainTime );
+      this.score.updateScore( Main.REMAIN_TIME - this.remainTime );
     }
   }
 
   reset() {
     //남은시간초기화
-    this.setText( this.timeElem, Main.REMAIN_TIME );
+    Dom.setText( this.timeElem, Main.REMAIN_TIME );
     this.matchingCount = 0;
     this.remainTime = Main.REMAIN_TIME;
 
@@ -146,13 +118,11 @@ export default class Main {
       const random = Math.floor( Math.random() * length );
       [ double[ i ], double[ random ] ] = [ double[ random ], double[ i ] ];
     }
-
     return double;
   }
 
   debounce(func, delay) {
     let timer = null;
-
     return function () {
       if( timer ) {
         clearTimeout( timer );
@@ -161,30 +131,19 @@ export default class Main {
     }
   }
 
-  show(elem) {
-    elem.style.display = 'block';
-  }
-
-  hide(elem) {
-    elem.style.display = 'none';
-  }
-
-  setText(elem, text) {
-    elem.innerHTML = text;
-  }
-
   startInterval = () => {
     this.interval = setInterval( () => {
       this.remainTime -= 1;
-      this.setText( this.timeElem, this.remainTime );
+      Dom.setText( this.timeElem, this.remainTime );
 
-      if( this.remainTime === 0 ) {
+      if( this.remainTime === 50 ) {
         clearInterval( this.interval );
-        this.show( this.dimElem );
-        this.startWrap.style.display = 'flex';
-        this.setText( this.startElem, "Game Over<br/>Restart" );
         this.isRestart = true;
-        this.updateScore( Main.REMAIN_TIME - this.remainTime );
+        this.score.updateScore( Main.REMAIN_TIME - this.remainTime );
+        Dom.setText( this.dimElem );
+        Dom.show( this.dimElem );
+        Dom.showFlex( this.startWrap );
+        Dom.setText( this.startElem, "Game Over<br/>Restart" );
       }
     }, 1000 );
   }
