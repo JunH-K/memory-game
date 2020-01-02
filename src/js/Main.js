@@ -1,6 +1,11 @@
 import datas from "./datas/Datas";
 
 export default class Main {
+
+  constructor(store) {
+    this.store = store;
+  }
+
   static REMAIN_TIME = 60;
   remainTime = Main.REMAIN_TIME;
   clickElement = [];
@@ -36,14 +41,14 @@ export default class Main {
 
     this.containerElem.appendChild( cards );
 
-    if( !this.getStorage( 'scores' ) ) {
-      this.setStorage( 'scores', [] )
+    if( !this.store.getLocalStorage( 'scores' ) ) {
+      this.store.setLocalStorage( 'scores', [] );
     } else {
       this.updateScore();
     }
   }
 
-  startGame=(e)=> {
+  startGame = (e) => {
     if( !this.isRestart && e.target.classList.contains( 'start_wrap' ) ) {
       this.startInterval();
     } else {
@@ -54,22 +59,12 @@ export default class Main {
     this.hide( this.dimElem );
     this.hide( this.startWrap );
 
-  }
-
-  setStorage(key, obj) {
-    const myStorage = window.localStorage;
-    return myStorage.setItem( key, JSON.stringify( obj ) );
-  }
-
-  getStorage(key) {
-    const myStorage = window.localStorage;
-    return JSON.parse( myStorage.getItem( key ) );
-  }
+  };
 
   updateScore(score) {
     const scoreElem = document.querySelector( '.score' );
     const frag = document.createDocumentFragment();
-    const scores = this.getStorage( 'scores' );
+    const scores = this.store.getLocalStorage( 'scores' );
     score && scores.push( score );
     scores.sort();
 
@@ -87,10 +82,10 @@ export default class Main {
     } );
 
     scoreElem.appendChild( frag );
-    this.setStorage( 'scores', scores );
+    this.store.setLocalStorage( 'scores', scores );
   }
 
-  onClickCard=(e)=> {
+  onClickCard = (e) => {
     if( this.clickElement.length < 2 && e.target.classList.contains( 'card-side-back' ) ) {
       e.target.parentNode.classList.add( 'flip' );
       this.clickElement.push( e.target );
@@ -196,7 +191,7 @@ export default class Main {
     elem.innerHTML = text;
   }
 
-  startInterval=()=> {
+  startInterval = () => {
     this.interval = setInterval( () => {
       this.remainTime -= 1;
       this.setText( this.timeElem, this.remainTime );
