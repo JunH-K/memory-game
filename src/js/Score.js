@@ -3,21 +3,23 @@ import Dom from "./util/Dom";
 export default class Score {
   constructor(store) {
     this.store = store;
+    this.scoreElem = document.querySelector( '.score' );
   }
 
   updateScore(score) {
     const scores = this.store.getLocalStorage( 'scores' );
-    score && scores.push( score ).sort( (a, b) => a - b );
-    this.store.setLocalStorage( 'scores', scores );
+    score && scores.push( score );
+
+    scores.sort( (a, b) => a - b );
+    this.store.setLocalStorage( 'scores', scores.slice( 0, 10 ) );
     this.render( scores );
   }
 
   render(scores) {
-    const scoreElem = document.querySelector( '.score' );
     const frag = document.createDocumentFragment();
 
-    Array.from( scoreElem.childNodes ).forEach( (child) => {
-      scoreElem.removeChild( child );
+    Array.from( this.scoreElem.childNodes ).forEach( (child) => {
+      this.scoreElem.removeChild( child );
     } );
 
     scores.slice( 0, 3 ).forEach( (item, index) => {
@@ -25,8 +27,8 @@ export default class Score {
       Dom.setText( liElem, `${ index + 1 }위 ${ item }초` );
       frag.appendChild( liElem );
     } );
-    scoreElem.appendChild( frag );
-    console.log( scoreElem );
+
+    this.scoreElem.appendChild( frag );
   }
 
 }

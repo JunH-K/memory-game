@@ -2,28 +2,29 @@ import Dom from "./util/Dom";
 import Deck from "./Deck";
 import Store from "./Store";
 import Score from "./Score";
+import { debounce } from "./util/util";
 
-export default class Main {
+export default class Board {
   static REMAIN_TIME = 60;
 
   constructor(datas) {
     const store = new Store( 'scores' );
     this.score = new Score( store );
     this.deck = new Deck( datas );
+    this.gameEndCount = datas.length / 2;
+
+    this.containerElem = Dom.find( '.container' );
+    this.dimElem = Dom.find( '.dim' );
+    this.startWrap = Dom.find( '.start_wrap' );
+    this.startElem = Dom.find( '.start' );
+    this.timeElem = Dom.find( '#time-remaining' );
+    this.remainTime = Board.REMAIN_TIME;
+    this.clickElement = [];
+    this.matchingCount = 0;
+    this.interval = null;
   }
 
-  remainTime = Main.REMAIN_TIME;
-  clickElement = [];
-  matchingCount = 0;
-  interval = null;
-  isRestart = false;
-  containerElem;
-  dimElem;
-  startWrap;
-  startElem;
-  timeElem;
-
-  checkMatching = this.debounce( () => {
+  checkMatching = debounce( () => {
     if ( this.clickElement.length !== 2 ){
       return;
     }
@@ -40,14 +41,9 @@ export default class Main {
   }, 500 );
 
   run() {
-    this.containerElem = Dom.find( '.container' );
-    this.dimElem = Dom.find( '.dim' );
-    this.startWrap = Dom.find( '.start_wrap' );
-    this.startElem = Dom.find( '.start' );
-    this.timeElem = Dom.find( '#time-remaining' );
     Dom.on( this.containerElem, 'click', this.onClickCard );
     Dom.on( this.startElem, 'click', this.onClickStartGame );
-    this.initCard(  );
+    this.initCard();
   }
 
   initCard() {
@@ -57,75 +53,60 @@ export default class Main {
     this.score.updateScore();
   }
 
-
   checkWin(count) {
-    if ( count === 8 ){
-      clearInterval( this.interval );
-      Dom.show( this.dimElem );
-      Dom.showFlex( this.startWrap );
-      Dom.setText( this.startElem, "Complete! <br/> Restart" );
-      this.isRestart = true;
-      this.score.updateScore( Main.REMAIN_TIME - this.remainTime );
+    if ( count !== this.gameEndCount ){
+      return;
     }
+
+    clearInterval( this.interval );
+    Dom.show( this.dimElem );
+    Dom.showFlex( this.startWrap );
+    Dom.setText( this.startElem, "Complete! <br/> Restart" );
+    this.score.updateScore( Board.REMAIN_TIME - this.remainTime );
   }
 
   reset() {
-    //남은시간초기화
-    Dom.setText( this.timeElem, Main.REMAIN_TIME );
     this.matchingCount = 0;
-    this.remainTime = Main.REMAIN_TIME;
+    this.remainTime = Board.REMAIN_TIME;
+    this.removeCard();
+    this.initCard();
+    Dom.setText( this.timeElem, Board.REMAIN_TIME );
+  }
 
-    //카드 초기화
+  removeCard(){
     Array.from( this.containerElem.childNodes ).forEach( (child) => {
       if ( child.classList && child.classList.contains( 'card' ) ){
         this.containerElem.removeChild( child );
       }
     } );
-
-    this.initCard( cardData );
-  }
-
-  debounce(func, delay) {
-    let timer = null;
-    return function () {
-      if ( timer ){
-        clearTimeout( timer );
-      }
-      timer = setTimeout( func, delay );
-    }
   }
 
   startInterval = () => {
     this.interval = setInterval( () => {
       this.remainTime -= 1;
       Dom.setText( this.timeElem, this.remainTime );
-      this.gameOver( this.remainTime, 0 );
+      this.checkGameOver( this.remainTime, 0 );
     }, 1000 );
   };
 
-  gameOver = (remainTime, timeout) => {
+  checkGameOver = (remainTime, timeout) => {
     if ( remainTime === timeout ){
       clearInterval( this.interval );
-      this.isRestart = true;
-      this.score.updateScore( Main.REMAIN_TIME - this.remainTime );
+      this.score.updateScore( Board.REMAIN_TIME - this.remainTime );
+
       Dom.setText( this.dimElem );
       Dom.show( this.dimElem );
       Dom.showFlex( this.startWrap );
       Dom.setText( this.startElem, "Game Over<br/>Restart" );
     }
-  }
+  };
 
-  onClickStartGame = (e) => {
-    if ( !this.isRestart && e.target.classList.contains( 'start' ) ){
-      this.startInterval();
-    } else {
-      this.reset();
-      this.startInterval();
-    }
+  onClickStartGame = () => {
+    this.reset();
+    this.startInterval();
 
     Dom.hide( this.dimElem );
     Dom.hide( this.startWrap );
-
   };
 
   onClickCard = (e) => {
@@ -134,5 +115,5 @@ export default class Main {
       this.clickElement.push( e.target );
       this.checkMatching();
     }
-  }
+  };
 }

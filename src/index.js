@@ -1,14 +1,11 @@
 import './css/reset.css';
 import './css/style.css';
-import Main from './js/Main'
+import Board from './js/Board'
 import cardData from "./js/datas/CardData";
 
-const App = () => {
-  const main = new Main(cardData);
-  main.run();
-};
+const board = new Board( cardData );
+board.run();
 
-App();
 
 
 
