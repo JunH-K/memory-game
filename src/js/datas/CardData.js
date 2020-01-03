@@ -9,7 +9,7 @@ import docker from "../../images/docker.png";
 import js from "../../images/js.png";
 import game from "../../images/game.png";
 
-const datas = [
+const cardData = [
   { frontImage: angular, backImage: js, key: 1 },
   { frontImage: node, backImage: js, key: 2 },
   { frontImage: react, backImage: js, key: 3 },
@@ -28,4 +28,4 @@ const datas = [
   { frontImage: docker, backImage: js, key: 8 },
 ];
 
-export default datas;
+export default cardData;

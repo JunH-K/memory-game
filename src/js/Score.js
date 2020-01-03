@@ -1,4 +1,4 @@
-import Dom from "./Dom";
+import Dom from "./util/Dom";
 
 export default class Score {
   constructor(store) {
@@ -6,28 +6,27 @@ export default class Score {
   }
 
   updateScore(score) {
+    const scores = this.store.getLocalStorage( 'scores' );
+    score && scores.push( score ).sort( (a, b) => a - b );
+    this.store.setLocalStorage( 'scores', scores );
+    this.render( scores );
+  }
+
+  render(scores) {
     const scoreElem = document.querySelector( '.score' );
     const frag = document.createDocumentFragment();
-    const scores = this.store.getLocalStorage( 'scores' );
-
-    score && scores.push( score );
-    scores.sort((a,b)=>a-b);
 
     Array.from( scoreElem.childNodes ).forEach( (child) => {
       scoreElem.removeChild( child );
     } );
 
-    scores.forEach( (item, index) => {
+    scores.slice( 0, 3 ).forEach( (item, index) => {
       const liElem = document.createElement( 'li' );
-      if( index > 2 ) {
-        return;
-      }
       Dom.setText( liElem, `${ index + 1 }위 ${ item }초` );
       frag.appendChild( liElem );
     } );
-
     scoreElem.appendChild( frag );
-    this.store.setLocalStorage( 'scores', scores );
+    console.log( scoreElem );
   }
 
 }

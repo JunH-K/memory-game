@@ -1,4 +1,4 @@
-import Dom from "./Dom";
+import Dom from "./util/Dom";
 import Deck from "./Deck";
 import Store from "./Store";
 import Score from "./Score";
@@ -82,7 +82,7 @@ export default class Main {
       }
     } );
 
-    this.initCard( datas );
+    this.initCard( cardData );
   }
 
   debounce(func, delay) {

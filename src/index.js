@@ -1,10 +1,10 @@
 import './css/reset.css';
 import './css/style.css';
 import Main from './js/Main'
-import datas from "./js/datas/Datas";
+import cardData from "./js/datas/CardData";
 
 const App = () => {
-  const main = new Main(datas);
+  const main = new Main(cardData);
   main.run();
 };
 
