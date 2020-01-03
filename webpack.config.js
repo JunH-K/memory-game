@@ -9,7 +9,7 @@ module.exports = (env, options) => {
 };
 
 const config = {
-  entry: './src/js/index.js',
+  entry: './src/index.js',
   devtool:'source-map',
   output: {
     path: path.resolve( __dirname, 'dist' ),
