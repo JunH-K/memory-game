@@ -1,5 +1,7 @@
 # Memory Game
 
+[![HitCount](http://hits.dwyl.io/JunH-K/memory-game.svg)](http://hits.dwyl.io/JunH-K/memory-game)
+
 :black_joker:[**게임하러가기**](https://JunH-K.github.io/memory-game/)
 
 같은 모양의 카드를 기억하여 맞추는 게임입니다.
