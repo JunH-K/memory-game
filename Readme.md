@@ -4,11 +4,14 @@
 
 :black_joker:[**게임하러가기**](https://JunH-K.github.io/memory-game/)
 
+
+1. 프로젝트 내용
+
 같은 모양의 카드를 기억하여 맞추는 게임입니다.
 
-**사용기술**
+2. 기술스택
 
-* VanillaJs
+* Vanilla Js
 * html
 * css
 
