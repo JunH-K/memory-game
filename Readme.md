@@ -1,6 +1,6 @@
 # Memory Game
 
-[![HitCount](http://hits.dwyl.io/JunH-K/memory-game.svg)](http://hits.dwyl.io/JunH-K/memory-game)
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FJunH-K%2Fmemory-game)](https://hits.seeyoufarm.com)
 
 :black_joker:[**게임하러가기**](https://JunH-K.github.io/memory-game/)
 
