@@ -13,7 +13,7 @@ export default class Board {
     this.deck = new Deck( datas );
     this.gameEndCount = datas.length / 2;
 
-    this.containerElem = Dom.find( '.container' );
+    this.boardElem = Dom.find( '.board' );
     this.dimElem = Dom.find( '.dim' );
     this.startWrap = Dom.find( '.start_wrap' );
     this.startElem = Dom.find( '.start' );
@@ -41,7 +41,7 @@ export default class Board {
   }, 500 );
 
   run() {
-    Dom.on( this.containerElem, 'click', this.onClickCard );
+    Dom.on( this.boardElem, 'click', this.onClickCard );
     Dom.on( this.startElem, 'click', this.onClickStartGame );
     this.initCard();
   }
@@ -49,7 +49,7 @@ export default class Board {
   initCard() {
     this.deck.shuffle();
     const cardElements = this.deck.createElements();
-    this.containerElem.appendChild( cardElements );
+    this.boardElem.appendChild( cardElements );
     this.score.updateScore();
   }
 
@@ -74,9 +74,9 @@ export default class Board {
   }
 
   removeCard(){
-    Array.from( this.containerElem.childNodes ).forEach( (child) => {
+    Array.from( this.boardElem.childNodes ).forEach( (child) => {
       if ( child.classList && child.classList.contains( 'card' ) ){
-        this.containerElem.removeChild( child );
+        this.boardElem.removeChild( child );
       }
     } );
   }

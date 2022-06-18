@@ -1,67 +1,75 @@
 body {
     background: #000000;
-    height: 100vh;
     color: white;
+}
+
+main {
+    max-width: 520px;
+    margin: 0 auto;
 }
 
 .title {
     font-weight: normal;
     text-align: center;
-    font-size: 3em;
+    font-size: 32px;
+    margin-top: 16px;
+    margin-bottom: 16px;
 }
 
 .game-info {
-    font-size: 2rem;
+    font-size: 24px;
 }
 
-.dim{
+.dim {
     z-index: 10;
     position: absolute;
-    top:0;
-    left:0;
+    top: 0;
+    left: 0;
     opacity: 0.8;
     text-align: center;
     background: black;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
 }
 
-.start_wrap{
+.start_wrap {
     z-index: 9999;
     position: absolute;
     display: flex;
     justify-content: center;
     align-items: center;
-    top:0;
-    left:0;
+    top: 0;
+    left: 0;
     font-size: 3rem;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     text-align: center;
 }
 
-.start_wrap .start{
+.start_wrap .start {
     cursor: pointer;
 }
 
 .info-container {
+    padding: 16px;
     grid-column: 1 /5;
     display: flex;
     justify-content: space-between;
 }
 
-.container {
-    display: grid;
-    grid-template-columns: repeat(4, auto);
-    grid-gap: 10px;
-    margin: 50px;
+.board {
+    margin: 8px;
+    display: flex;
+    flex-wrap: wrap;
     justify-content: center;
+
 }
 
 .card {
     position: relative;
     width: 105px;
     height: 155px;
+    margin: 8px;
     perspective: 1000px;
 }
 
@@ -89,14 +97,42 @@ body {
     cursor: pointer;
 }
 
-.card.flip  .card-side-back{
+.card.flip .card-side-back {
     transform: rotateY(180deg);
 }
 
-.card.flip  .card-side-front{
+.card.flip .card-side-front {
     transform: rotateY(360deg);
 }
 
-.card-side-back:hover{
+.card-side-back:hover {
     transform: translateZ(50px);
+}
+
+@media all and (max-width: 767px) {
+    main {
+        max-width: 768px;
+        margin: 0 auto;
+    }
+
+    .board {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin: 8px;
+    }
+
+    .card {
+        position: relative;
+        width: 80px;
+        height: 100px;
+        margin: 4px;
+        perspective: 1000px;
+    }
+
+    .info-container {
+        grid-column: 1 /5;
+        display: flex;
+        justify-content: space-between;
+    }
 }

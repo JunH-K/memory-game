@@ -1,39 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>카드 매칭 게임</title>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>카드 매칭 게임</title>
 </head>
 <body>
-<h1 class="title">Card Matching Game</h1>
-<div class="container">
-  <div class="info-container">
-    <div class="game-info">
-      남은시간 : <span id="time-remaining">0</span>초
+<main>
+    <h1 class="title">Card Matching Game</h1>
+    <div class="info-container">
+        <div class="game-info">
+            남은시간 : <span id="time-remaining">0</span>초
+        </div>
+        <div>
+            Best Score
+            <ol class="score">
+            </ol>
+        </div>
     </div>
-    <div >
-      Best Score
-      <ol class="score">
-      </ol>
+    <div class="board">
     </div>
-  </div>
-</div>
+</main>
 <div class="dim"></div>
 <div class="start_wrap">
-  <span class="start">Game Start!</span>
+    <span class="start">Game Start!</span>
 </div>
 <script src="dist/bundle.js"></script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156522763-1"></script>
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    window.dataLayer = window.dataLayer || [];
 
-  gtag('config', 'UA-156522763-1');
+    function gtag() {
+        console.log(arguments);
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-156522763-1');
 </script>
 
 </body>
